@@ -4,6 +4,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
+import DishDetail from './DishdetailComponent';
 
 import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
@@ -38,12 +39,21 @@ class Main extends Component {
                 />
             );
         } 
+        //in fact there is 3 props in the functional component : match,location,history
+        const DishWithId = ({match}) =>{
+            return(
+                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+                    comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))[0]}
+                />
+            );
+        }
         return (
             <div>
                 <Header />
                 <Switch>
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
+                    <Route path='/menu/:dishId' component={DishWithId} />
                     <Route exact path='/contactus' component={Contact} />
                     <Redirect to="/home" />
                 </Switch>  
@@ -61,7 +71,7 @@ export default Main;
 
             <Navbar dark color="primary">
                 <div className="container">
-                    <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
+                    <NavbarBrand href="/">Dz-Restaurant</NavbarBrand>
                 </div>
             </Navbar>
                 
