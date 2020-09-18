@@ -4,6 +4,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 import DishDetail from './DishdetailComponent';
 
 import { DISHES } from '../shared/dishes';
@@ -39,6 +40,15 @@ class Main extends Component {
                 />
             );
         } 
+
+        const AboutPage = () => {
+            return(
+                <About 
+                    leaders={this.state.leaders}
+                />
+            );
+        } 
+
         //in fact there is 3 props in the functional component : match,location,history
         const DishWithId = ({match}) =>{
             return(
@@ -54,6 +64,7 @@ class Main extends Component {
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
                     <Route path='/menu/:dishId' component={DishWithId} />
+                    <Route exact path='/aboutus' component={AboutPage} />
                     <Route exact path='/contactus' component={Contact} />
                     <Redirect to="/home" />
                 </Switch>  
