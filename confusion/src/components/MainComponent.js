@@ -6,26 +6,20 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import DishDetail from './DishdetailComponent';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
 
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
-
-import { Switch, Route, Redirect } from 'react-router-dom';
+// Map the redux's store state into propos to make'em available for components
+const mapStateToProps = state => {
+    return {
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
+    }
+}
 
 class Main extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dishes: DISHES,
-            comments: COMMENTS,
-            promotions: PROMOTIONS,
-            leaders: LEADERS            
-            //selectedDish: null
-        };
-    }
-
     /*onDishSelect(dishId) {
         this.setState({ selectedDish: dishId});
     }*/
@@ -34,46 +28,44 @@ class Main extends Component {
         const HomePage = () => {
             return(
                 <Home 
-                    dish={this.state.dishes.filter((dish) => dish.featured)[0]}
-                    promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
-                    leader={this.state.leaders.filter((leader) => leader.featured)[0]}
+                    dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+                    promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
+                    leader={this.props.leaders.filter((leader) => leader.featured)[0]}
                 />
             );
-        } 
-
-        const AboutPage = () => {
-            return(
-                <About 
-                    leaders={this.state.leaders}
-                />
-            );
-        } 
-
+          }
+        
         //in fact there is 3 props in the functional component : match,location,history
-        const DishWithId = ({match}) =>{
+        const DishWithId = ({match}) => {
             return(
-                <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
-                    comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
-                />
+                <DishDetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+                    comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
             );
-        }
+        };
+
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route path='/home' component={HomePage} />
-                    <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
-                    <Route path='/menu/:dishId' component={DishWithId} />
-                    <Route exact path='/aboutus' component={AboutPage} />
-                    <Route exact path='/contactus' component={Contact} />
-                    <Redirect to="/home" />
-                </Switch>  
+                <div>
+                    <Switch>
+                        <Route path='/home' component={HomePage} />
+                        <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
+                        <Route path='/menu/:dishId' component={DishWithId} />
+                        <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} /> }/>
+                        <Route exact path='/contactus' component={Contact} />
+                        <Redirect to="/home" />
+                    </Switch>
+                </div>  
                 <Footer />
             </div>
             );
     }
 }
-export default Main;
+//when using redux u have to update the export from this 
+// export default Main; 
+// to this
+export default withRouter(connect(mapStateToProps)(Main));
+
 
 /*
                 <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
