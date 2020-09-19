@@ -22,6 +22,9 @@ class CommentForm extends Component{
     }
 
     handleSubmitComment(values) {
+        //Save Comment
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        //Close Modal
         this.toggleModal();
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
@@ -57,9 +60,9 @@ class CommentForm extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="name" md={2}>Your Name</Label>
+                                <Label htmlFor="author" md={2}>Your Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".name" id="name" name="name"
+                                    <Control.text model=".author" id="author" name="author"
                                         className="form-control"
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
@@ -67,7 +70,7 @@ class CommentForm extends Component{
                                             />
                                     <Errors
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             required: 'Required',
@@ -81,7 +84,7 @@ class CommentForm extends Component{
                                 <Label htmlFor="comment" md={2}>Comment</Label>
                                 <Col md={10}>
                                     <Control.textarea model=".comment" id="comment" name="comment"
-                                        rows="12"
+                                        rows="6"
                                         className="form-control" />
                                 </Col>
                             </Row>
@@ -114,7 +117,7 @@ function RenderDish({dish}) {
     );
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
     if (comments != null) {
         const commentss = comments.map((comment) => {
             return(
@@ -122,12 +125,12 @@ function RenderComments({comments}) {
                     <p>{comment.comment}</p>
                     <p>-- {comment.author}
                         ,{new Intl.DateTimeFormat('en-US', {
-                                year: 'numeric', 
-                                month: 'short', 
-                                day: '2-digit'}).format(
-                                    new Date(Date.parse(comment.date)
-                                    )
-                                )}
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: '2-digit'}).format(
+                                new Date(Date.parse(comment.date)
+                            )
+                        )}
                     </p>
                 </li>
             );
@@ -138,7 +141,7 @@ function RenderComments({comments}) {
                 <ul className="list-unstyled">
                     {commentss}                   
                 </ul>
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     }
@@ -166,7 +169,10 @@ const DishDetail = (props) => {
                 </div>
                 <div className="row">
                     <RenderDish dish={props.dish} /> 
-                    <RenderComments comments={props.comments} /> 
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                 </div>
             </div>
         );
