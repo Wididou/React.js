@@ -10,7 +10,7 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-class Comment extends Component{
+class CommentForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -138,7 +138,7 @@ function RenderComments({comments}) {
                 <ul className="list-unstyled">
                     {commentss}                   
                 </ul>
-                <Comment />
+                <CommentForm />
             </div>
         );
     }
