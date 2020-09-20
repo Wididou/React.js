@@ -12,7 +12,7 @@ import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 //action creators
-import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import { postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
 
 // Map the redux's store state into propos to make'em available for components
@@ -29,11 +29,14 @@ const mapDispatchToProps = dispatch => ({
     /*addComment: (dishId, rating, author, comment) => 
                 dispatch(addComment(dishId, rating, author, comment)),*/
     fetchDishes: () => { dispatch(fetchDishes())},
-    resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
     fetchComments: () => dispatch(fetchComments()),
     fetchPromos: () => dispatch(fetchPromos()),
     postComment: (dishId, rating, author, comment) => 
                 dispatch(postComment(dishId, rating, author, comment)),
+    
+    resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
+    postFeedback: (firstname, lastname, telnum, email, agree, contactType, message) =>
+                dispatch(postFeedback(firstname, lastname, telnum, email, agree, contactType, message)),
     fetchLeaders: () => dispatch(fetchLeaders())
   });
 
@@ -90,7 +93,10 @@ class Main extends Component {
                         <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders.leaders} />} />
                         <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
                         <Route path='/menu/:dishId' component={DishWithId} />
-                        <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                        <Route exact path='/contactus' component={() => <Contact 
+                                            resetFeedbackForm={this.props.resetFeedbackForm} 
+                                            postFeedback={this.props.postFeedback}
+                                            />} />
                         <Redirect to="/home" />
                     </Switch>
                     </CSSTransition>
