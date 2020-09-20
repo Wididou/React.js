@@ -100,7 +100,7 @@ class CommentForm extends Component{
                     </ModalBody>
                 </Modal>            
             </div>
-        );
+        )
     }
 }  
 
@@ -122,7 +122,7 @@ function RenderComments({comments, addComment, dishId}) {
     if (comments != null) {
         const commentss = comments.map((comment) => {
             return(
-                <li>
+                <li key={comment.id}>
                     <p>{comment.comment}</p>
                     <p>-- {comment.author}
                         ,{new Intl.DateTimeFormat('en-US', {
@@ -154,7 +154,26 @@ function RenderComments({comments, addComment, dishId}) {
 }
 
 const DishDetail = (props) => {
-    if(props.dish != null){
+    console.log(props);
+    if (props.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish != null) {
         return(
             <div className="container">
                 <div className="row">
