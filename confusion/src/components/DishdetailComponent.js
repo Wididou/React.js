@@ -4,6 +4,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Button, Modal, ModalHeade
     ,Breadcrumb,BreadcrumbItem} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 // Validation rules
 const required = (val) => val && val.length;
