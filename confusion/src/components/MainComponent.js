@@ -10,7 +10,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 //action creators
-import { addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 
 
 // Map the redux's store state into propos to make'em available for components
@@ -24,11 +24,15 @@ const mapStateToProps = state => {
 }
 // Adds action creators to make'em accesible from component's props
 const mapDispatchToProps = dispatch => ({
-    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+    /*addComment: (dishId, rating, author, comment) => 
+                dispatch(addComment(dishId, rating, author, comment)),*/
     fetchDishes: () => { dispatch(fetchDishes())},
     resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
     fetchComments: () => dispatch(fetchComments()),
-    fetchPromos: () => dispatch(fetchPromos())
+    fetchPromos: () => dispatch(fetchPromos()),
+    postComment: (dishId, rating, author, comment) => 
+                dispatch(postComment(dishId, rating, author, comment))
+
   });
 
 class Main extends Component {
@@ -64,7 +68,8 @@ class Main extends Component {
                     errMess={this.props.dishes.errMess}
                     comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
                     commentsErrMess={this.props.comments.errMess}
-                    addComment={this.props.addComment}
+                    postComment={this.props.postComment}
+                    //addComment={this.props.addComment}
                 />
             );
         };
