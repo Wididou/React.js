@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'r
 import { Link } from 'react-router-dom';
 import { baseUrl } from '../shared/baseUrl';
 import { Fade, Stagger } from 'react-animation-components';
+import { Loading } from './LoadingComponent';
 
 function RenderLeader({leader}){
     return(
@@ -23,15 +24,29 @@ function RenderLeader({leader}){
 
 
 function About(props) {
-    const leaders = props.leaders.map((leader) => {
-        console.log(leader);
-        return (
-            <RenderLeader leader={leader} />
+    if (props.leaders.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
         );
-    });
-
-    return(
-        <div className="container">
+    }
+    else if (props.leaders.errMess) {
+        return(
+            <div className="container">
+                <div className="row"> 
+                    <div className="col-12">
+                        <h4>{props.leaders.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    else{
+        return (
+          <div className="container">
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
@@ -87,7 +102,7 @@ function About(props) {
                 <div className="col-12">
                     <Media list>
                         <Stagger in>
-                            {props.leaders.map((leader) => {
+                            {props.leaders.leaders.map((leader) => {
                                 return (
                                     <Fade in>
                                         <RenderLeader leader={leader} />
@@ -98,8 +113,9 @@ function About(props) {
                     </Media>
                 </div>
             </div>
-        </div>
-    );
+          </div>
+        );
+    }
 }
 
 export default About;    
