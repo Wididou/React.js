@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import { Card, CardImg, CardText, CardBody, CardTitle, Button, Modal, ModalHeader, ModalBody, Label, Row, Col
+import { Card, CardImg, CardText, CardBody, CardTitle, Button, Modal, 
+    ModalHeader, ModalBody, Label, Row, Col
     ,Breadcrumb,BreadcrumbItem} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
@@ -19,6 +20,7 @@ class CommentForm extends Component{
         };
 
         this.toggleModal = this.toggleModal.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitComment = this.handleSubmitComment.bind(this);
     }
 
