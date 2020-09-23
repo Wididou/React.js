@@ -5,12 +5,14 @@ const bodyParser = require('body-parser');
 const hostname = 'localhost';
 const port = 3000;
 const app = express();
+const dishRouter = require('./routes/dishRouter');
 
+app.use('/dishes',dishRouter);
 app.use(morgan('dev')); //to log infos to the screen of the app
 app.use(bodyParser.json()); //to convert body of respons to json
 app.use(express.static(__dirname + '/public')); //to serve up static files
 
-app.all('/dishes', (req,res,next) => {
+/*app.all('/dishes', (req,res,next) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     next();
@@ -51,7 +53,7 @@ app.put('/dishes/:dishId', (req, res, next) => {
 app.delete('/dishes/:dishId', (req, res, next) => {
     res.end('Deleting dish: ' + req.params.dishId);
 });
-
+*/
 //next is used when you need to invoke additional middleware
 app.use((req, res, next) => {
     console.log(req.headers);
