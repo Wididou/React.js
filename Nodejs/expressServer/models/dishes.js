@@ -14,13 +14,14 @@ var commentSchema = new Schema({
         type: String,
         required: true
     },
-    author:  {
-        type: String,
-        required: true
+    author: {
+        type: mongoose.Schema.Types.ObjectId, //to be able to use mongoose-population
+        ref: 'User'
     }
 }, {
     timestamps: true
 });
+
 
 var dishSchema = new Schema({
     name: {
