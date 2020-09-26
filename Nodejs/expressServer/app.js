@@ -7,6 +7,7 @@ var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var passport = require('passport');
 var authenticate = require('./authenticate');
+var config = require('./config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,7 +16,7 @@ var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/conFusion';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
 //establish connection to the mango db server
@@ -34,7 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(session({
     name: 'session-id',
-    secret: '12345-67890-09876-54321',
+    secret: config.secretKey,
     saveUninitialized: false,
     resave: false,
     store: new FileStore()
