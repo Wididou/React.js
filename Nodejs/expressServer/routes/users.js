@@ -30,7 +30,8 @@ router.post('/signup', (req, res, next) => {
 });
   
 //login using passport & jwt based auth
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', passport.authenticate('local'), //this will load user in req that"s why we can do req.user
+        (req, res) => {
     var token = authenticate.getToken({_id: req.user._id});
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');

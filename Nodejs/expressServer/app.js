@@ -33,37 +33,27 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+/*since session : false
 app.use(session({
     name: 'session-id',
     secret: config.secretKey,
     saveUninitialized: false,
     resave: false,
     store: new FileStore()
-}));
+})); */
 
 app.use(passport.initialize()); // serialize user info
-app.use(passport.session()); //automatically stored in the session
+//app.use(passport.session()); //automatically stored in the session
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.use(express.static(path.join(__dirname, 'public'))); //enables to serve static data
+                                                        //from public folder
 app.use('/dishes',dishRouter);
 app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
 
-function auth (req, res, next) {
-    console.log(req.user);
-    if (!req.user) {
-      var err = new Error('You are not authenticated!');
-      err.status = 403;
-      next(err);
-    }
-    else { next(); }
-}
-
-/* Authentication must be done before accessing public folder */
-app.use(auth);
-app.use(express.static(path.join(__dirname, 'public'))); //enables to serve static data
-                                                        //from public folder
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
@@ -81,6 +71,19 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+/*function auth (req, res, next) {
+    console.log(req.user);
+    if (!req.user) {
+      var err = new Error('You are not authenticated!');
+      err.status = 403;
+      next(err);
+    }
+    else { next(); }
+}*/
+
+/* Authentication must be done before accessing public folder */
+//app.use(auth);
 
 // Basic Authentication 
 /*

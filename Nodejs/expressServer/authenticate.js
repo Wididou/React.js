@@ -17,7 +17,8 @@ exports.getToken = function(user) { //create token & send it back
 };
 
 var opts = {}; //options for jwt based strategy
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken(); //extracted from incoming request
+//extracted from incoming request
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();//token is in authorization-header
 opts.secretOrKey = config.secretKey;
 
 exports.jwtPassport = passport.use(new JwtStrategy(opts,
@@ -36,4 +37,5 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
         });
     }));
 
-exports.verifyUser = passport.authenticate('jwt', {session: false});
+exports.verifyUser = passport.authenticate('jwt', {session: false}); //uses token in header
+// and verifies incoming user if its successfull it allows u to proceed
